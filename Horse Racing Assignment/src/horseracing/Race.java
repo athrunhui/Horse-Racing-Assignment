@@ -11,7 +11,6 @@ public class Race {
 
     private List<Horse> results;
 
-
     public Race(List<Horse> horses, double raceLength, String raceSurface) {
         this.horses = horses;
         this.raceLength = raceLength;
@@ -47,10 +46,15 @@ public class Race {
         System.out.println("Race Information:");
         System.out.println("Race Surface: " + raceSurface);
         System.out.println("Race Length: " + raceLength + " furlongs");
-        System.out.println("List of Horses:");
+        System.out.println("+-----------------------------------------------------+");
+        System.out.println("|    name    |    Mud Rating    |    Grass Rating    | ");
         for (Horse horse : horses) {
-            System.out.println("- " + horse.getName());
+            System.out.println("| " + horse.getName() + "|");
         }
+    }
+
+    public void displayBettingInfo(){
+        System.out.println();
     }
 
     public void displayResults(){
@@ -81,7 +85,7 @@ public class Race {
                 results.add(horse);
                 horse.setRaceFinished(true);
             } else if(!horse.raceFinished()){
-                horse.incrementPosition((int)(Math.random() * 4));
+                horse.incrementPosition((int)(Math.random() * 4)); //horse movement
             }
 
             displayResults();
