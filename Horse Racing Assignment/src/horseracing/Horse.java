@@ -70,5 +70,9 @@ public class Horse{
             currentPosition = 2;
             finishedRace = false;
         }
+
+        public void placeBet(){
+            
+        }
        
     }

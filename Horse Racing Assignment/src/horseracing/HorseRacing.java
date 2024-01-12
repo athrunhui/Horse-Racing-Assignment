@@ -15,7 +15,9 @@ public class HorseRacing {
 
             Race race = HorseRacingHelper.createRace(numHorsesInRace, HorseRacingHelper.SHORT, HorseRacingHelper.DIRT);
             race.displayRaceInfo();
-
+            race.displayBettingInfo();
+            System.out.print("Please choose a bet type: ");
+            int bet = in.nextInt();
             race.startRace();
 
             System.out.println("Race is Over");
