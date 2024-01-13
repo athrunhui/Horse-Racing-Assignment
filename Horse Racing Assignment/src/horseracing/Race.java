@@ -54,7 +54,13 @@ public class Race {
     }
 
     public void displayBettingInfo(){
-        System.out.println();
+        System.out.println("1. Win - A horse finishing 1st");
+        System.out.println("2. Place - A horse finishing 1st or 2nd");
+        System.out.println("3. Show - A horse finishing in the top 3");
+        System.out.println("4. Boxed Exacta - 2 horses finishing 1st or 2nd in any order");
+        System.out.println("5. Boxed Trifecta - 3 horses finishing in the top 3");
+        System.out.println("6. Exacta - 2 horses that finish 1st and 2nd in a specific order");
+        System.out.println("7. Trifecta - 3 horses finishing 1st, 2nd, and 3rd in the correct order");
     }
 
     public void displayResults(){

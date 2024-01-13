@@ -155,6 +155,16 @@ public class HorseRacingHelper {
         System.out.printf("|%"+(width-1) + "s","|\n");
     }
 
+    public static int getLongestWidth(List<Horse> horses){
+        int i = 0;
+        for (Horse horse : horses) {
+            if (horse.getName().length() > i){
+                i = horse.getName().length();
+            }
+        }
+        return i;
+    }
+
     public static void playBackgroundMusic(String filePath, boolean repeat) {
         shouldContinue = true;
         musicThread = new Thread(() -> {
