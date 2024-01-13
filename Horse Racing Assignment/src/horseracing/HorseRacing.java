@@ -1,5 +1,6 @@
 package horseracing;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class HorseRacing {
@@ -17,7 +18,7 @@ public class HorseRacing {
             race.displayRaceInfo();
             race.displayBettingInfo();
             System.out.print("Please choose a bet type: ");
-            int bet = in.nextInt();
+            //int bet = in.nextInt();
             race.startRace();
 
             System.out.println("Race is Over");
@@ -28,13 +29,26 @@ public class HorseRacing {
     }
 
     private static boolean playAgain(Scanner in) {
-        System.out.print("Play Again: (y/n): ");
-        String result = in.nextLine();
+        boolean isValid = false;
+        String result = "";
+        while(!isValid){
+            System.out.print("Play Again: (y/n): ");
+            try{
+                result = (in.nextLine()).toLowerCase();
+                if ((result.equals("n"))||(result.equals("y"))){
+                    isValid = true;
+                }
+            }catch(InputMismatchException badThing){
+                System.out.println("Please enter y or n.");
+            }
+        }
 
-        if (result.equals("n"))
+        if (result.equals("n")){
+            System.out.println("Thanks for playing.");
             return true;
-
+        }    
         return false;
 
     }
+
 }
