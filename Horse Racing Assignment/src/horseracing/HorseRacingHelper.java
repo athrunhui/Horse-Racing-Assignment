@@ -20,6 +20,8 @@ public class HorseRacingHelper {
     public static final int SHORT = 0;
     public static final int MIDDLE = 1;
     public static final int LONG = 2;
+    private static int rTerrain;
+    private static String rLength;
 
     public static final int GRASS = 0;
     public static final int DIRT = 1;
@@ -90,21 +92,30 @@ public class HorseRacingHelper {
     }
 
     public static Race createRace(int numHorses, int raceType, int raceTerrain){
+        rTerrain = raceTerrain;
         double[] raceLengths;
-        if (raceType == SHORT)
+        if (raceType == SHORT) {
             raceLengths = SHORT_RACES;
-        else if (raceType == MIDDLE)
+            rLength = "short";
+        } else if (raceType == MIDDLE){
             raceLengths = MIDDLE_RACES;
-        else
+            rLength = "middle";
+        } else {
             raceLengths = LONG_RACES;
+            rLength = "long";
+        }
 
         String terrain = "";
-        if (raceTerrain == GRASS)
+        if (raceTerrain == GRASS){
             terrain = "Grass";
-        else if (raceTerrain == DIRT)
+            raceTerrain = 0;
+        } else if (raceTerrain == DIRT){
             terrain = "Dirt";
-        else
+            raceTerrain = 1;
+        } else {
             terrain = "Mud";
+            raceTerrain = 2;
+        }
 
         double raceLength = raceLengths[(int)(Math.random()*raceLengths.length)];
             
@@ -116,6 +127,14 @@ public class HorseRacingHelper {
             horses.get(j-1).setNumber(j);
         }
         return new Race(horses, raceLength, terrain);
+    }
+
+    public static int getTerrain(){
+        return rTerrain;
+    }
+
+    public static String getRaceLength(){
+        return rLength;
     }
 
     public static void clearConsole() {
