@@ -14,8 +14,22 @@ public class HorseRacing {
             HorseRacingHelper.clearConsole();
 
             int numHorsesInRace = (int)(Math.random()*7)+5;
+            int raceLength = HorseRacingHelper.SHORT;
+            int raceLChange = (int)((Math.random()*10)%3);
+            int raceType = HorseRacingHelper.DIRT;
+            int raceTChange = (int)((Math.random()*10)%3);
 
-            Race race = HorseRacingHelper.createRace(numHorsesInRace, HorseRacingHelper.SHORT, HorseRacingHelper.DIRT);
+            if (raceLChange == 1)
+                raceLength = HorseRacingHelper.MIDDLE;
+            else if (raceLChange == 2)
+                raceLength = HorseRacingHelper.LONG;
+
+            if (raceTChange == 1)
+                raceType = HorseRacingHelper.MUD;
+            else if (raceTChange == 2)
+                raceType = HorseRacingHelper.GRASS;
+
+            Race race = HorseRacingHelper.createRace(numHorsesInRace, raceLength, raceType);
             race.displayRaceInfo();
             race.displayBettingInfo();
             race.startRace();

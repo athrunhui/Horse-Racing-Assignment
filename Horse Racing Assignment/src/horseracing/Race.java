@@ -147,13 +147,30 @@ public class Race {
             HorseRacingHelper.clearConsole();
             HorseRacingHelper.updateTrack(numSpaces, horses);
             Horse horse = getNextHorse();
-           
 
+            int mover = 5;
+            double lengthCheck = horse.getPreferredLength();
+            int ratingCheck = 0;
+            if (raceSurface == "Mud")
+                ratingCheck = horse.getMudRating();
+            if (raceSurface == "Grass")
+                ratingCheck = horse.getGrassRating();
+            if (raceSurface == "Dirt")
+                ratingCheck = horse.getDirtRating();
+            if (Math.abs(raceLength - lengthCheck) <= 1.5)
+                mover += 3;
+            if (ratingCheck >= 8)
+                mover += 3;
+            if (ratingCheck >= 6 && ratingCheck < 8)
+                mover += 2;
+            if (ratingCheck <= 5)
+                mover += 1;
+            
             if(!horse.raceFinished() && horse.getCurrentPosition() >= numSpaces){
                 results.add(horse);
                 horse.setRaceFinished(true);
             } else if(!horse.raceFinished()){
-                horse.incrementPosition((int)(Math.random() * 4)); //horse movement
+                horse.incrementPosition((int)(Math.random() * mover)); //horse movement
             }
 
             displayResults();
