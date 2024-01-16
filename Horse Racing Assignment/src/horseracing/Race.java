@@ -55,12 +55,15 @@ public class Race {
         System.out.println("Race Information:");
         System.out.println("Race Surface: " + raceSurface);
         System.out.println("Race Length: " + raceLength + " furlongs");
-        System.out.println("+-----------------------+----------+------------+-----------+----------+");
-        System.out.println("|        name           |Mud Rating|Grass Rating|Dirt Rating|Fav Length|");
-        System.out.println("+-----------------------+----------+------------+-----------+----------+");
+        System.out.println("+-------------------------+----------+------------+-----------+----------+");
+        System.out.println("|          name           |Mud Rating|Grass Rating|Dirt Rating|Fav Length|");
+        System.out.println("+-------------------------+----------+------------+-----------+----------+");
         for (Horse horse : horses) {
-            System.out.print("|" + horse.getName());
-            for(int j = 0; j < 23 - horse.getLength(); j++){
+            if(horse.getNumber() == 10)
+                System.out.print("|" + horse.getNumber() + ". " + horse.getName());
+            else
+                System.out.print("|" + horse.getNumber() + ". " + horse.getName() + " ");
+            for(int j = 0; j < 21 - horse.getLength(); j++){
                 System.out.print(" ");    
             }
             if(horse.getMudRating() == 10 )
@@ -85,7 +88,7 @@ public class Race {
             System.out.print("|    " + spaceD + horse.getDirtRating() + "0%   ");
             System.out.println("|   " + spaceL + horse.getPreferredLength() + "   |");
         }
-        System.out.println("+----------------------------------------------------------------------+");
+        System.out.println("+------------------------------------------------------------------------+");
         System.out.println();
     }
 
