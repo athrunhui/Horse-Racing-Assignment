@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class HorseRacing {
 
      public static void main(String[] args) {
+        boolean start = false;
         Scanner in = new Scanner(System.in);    
         HorseRacingHelper.prepareHorseRacingSimulation();
         boolean gameOver = false;
@@ -18,8 +19,18 @@ public class HorseRacing {
             race.displayRaceInfo();
             race.displayBettingInfo();
             System.out.print("Please choose a bet type: ");
-            //int bet = in.nextInt();
-            race.startRace();
+            while(!start){
+            int bet = in.nextInt();
+            if(bet < 4)
+              race.startRace();
+            if(bet == 4){
+                System.out.println("Please choose 2 horses");
+                System.out.println("Horse 1: ");
+                int horse1 = in.nextInt();
+                
+                System.out.println();
+            }
+            }
 
             System.out.println("Race is Over");
             gameOver = playAgain(in);

@@ -8,7 +8,12 @@ public class Race {
     private double raceLength; // in furlongs
     private String raceSurface; // "grass", "dirt", or "mud" (Uses HorseRacingHelper constants)
     private int currentHorse;
-
+    private String spaceM;
+    private String spaceG;
+    private String spaceD;
+    private String spaceL;
+    private int wallet = 20;
+    
     private List<Horse> results;
 
     public Race(List<Horse> horses, double raceLength, String raceSurface) {
@@ -42,15 +47,46 @@ public class Race {
         return raceSurface;
     }
 
+    
+    
+    
+
     public void displayRaceInfo() {
         System.out.println("Race Information:");
         System.out.println("Race Surface: " + raceSurface);
         System.out.println("Race Length: " + raceLength + " furlongs");
-        System.out.println("+-----------------------------------------------------+");
-        System.out.println("|    name    |    Mud Rating    |    Grass Rating    | ");
+        System.out.println("+-----------------------+----------+------------+-----------+----------+");
+        System.out.println("|        name           |Mud Rating|Grass Rating|Dirt Rating|Fav Length|");
+        System.out.println("+-----------------------+----------+------------+-----------+----------+");
         for (Horse horse : horses) {
-            System.out.println("| " + horse.getName() + "|");
+            System.out.print("|" + horse.getName());
+            for(int j = 0; j < 23 - horse.getLength(); j++){
+                System.out.print(" ");    
+            }
+            if(horse.getMudRating() == 10 )
+                spaceM = "";
+            else
+                spaceM = " ";
+            if(horse.getGrassRating() == 10)
+                spaceG = "";
+            else
+                spaceG = " ";
+            if(horse.getDirtRating() == 10)
+                spaceD = "";
+            else 
+                spaceD = " ";
+            if(horse.getPreferredLength() >= 10.0)
+                spaceL = "";
+            else   
+                spaceL = " ";
+            
+            System.out.print("|   " + spaceM + horse.getMudRating() + "0%   ");
+            System.out.print("|    " + spaceG + horse.getGrassRating() + "0%    ");
+            System.out.print("|    " + spaceD + horse.getDirtRating() + "0%   ");
+            System.out.println("|   " + spaceL + horse.getPreferredLength() + "   |");
         }
+        System.out.println("+----------------------------------------------------------------------+");
+        System.out.println();
     }
 
     public void displayBettingInfo(){
@@ -61,6 +97,29 @@ public class Race {
         System.out.println("5. Boxed Trifecta - 3 horses finishing in the top 3");
         System.out.println("6. Exacta - 2 horses that finish 1st and 2nd in a specific order");
         System.out.println("7. Trifecta - 3 horses finishing 1st, 2nd, and 3rd in the correct order");
+        System.out.println();
+        System.out.println("+-----------------------+---+---+---+");
+        System.out.println("|        name           | 1 | 2 | 3 |");
+        System.out.println("+-----------------------+---+---+---+");
+        for (Horse horse : horses) {
+            System.out.print("|" + horse.getName());
+            for(int j = 0; j < 23 - horse.getLength(); j++){
+                System.out.print(" ");    
+            }
+            System.out.print("|" + horse.bettingWin());
+            System.out.print("|" + horse.bettingPlace());
+            System.out.print("|" + horse.bettingShow());
+            System.out.print("|" + horse.bettingShow());            
+            /*System.out.print("|" + horse.bettingShow());
+            System.out.print("|" + horse.bettingShow());
+            System.out.println("|" + horse.bettingShow() + "|");*/
+        }
+        System.out.println("+----------------------------------------------------------------------+");
+
+    }
+
+    public void displayBoxExInfo(){
+        
     }
 
     public void displayResults(){
