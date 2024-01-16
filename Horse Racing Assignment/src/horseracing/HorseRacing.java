@@ -41,6 +41,7 @@ public class HorseRacing {
     }
 
     private static boolean playAgain(Scanner in) {
+        System.out.print("\u001B[?25l");  // Hide the cursor
         boolean isValid = false;
         String result = "";
         while(!isValid){

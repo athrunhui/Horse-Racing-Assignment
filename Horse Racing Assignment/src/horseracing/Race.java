@@ -112,12 +112,12 @@ public class Race {
             System.out.print("|" + horse.bettingWin());
             System.out.print("|" + horse.bettingPlace());
             System.out.print("|" + horse.bettingShow());
-            System.out.print("|" + horse.bettingShow());            
+            System.out.println("|");           
             /*System.out.print("|" + horse.bettingShow());
             System.out.print("|" + horse.bettingShow());
             System.out.println("|" + horse.bettingShow() + "|");*/
         }
-        System.out.println("+----------------------------------------------------------------------+");
+        System.out.println("+-----------------------------------+");
 
     }
 
