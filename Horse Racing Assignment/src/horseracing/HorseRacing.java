@@ -7,6 +7,7 @@ public class HorseRacing {
 
      public static void main(String[] args) {
         boolean start = false;
+        boolean four = false;
         Scanner in = new Scanner(System.in);    
         HorseRacingHelper.prepareHorseRacingSimulation();
         boolean gameOver = false;
@@ -22,21 +23,26 @@ public class HorseRacing {
 
             race.startRace();
             race.displayBettingInfo();
-            System.out.print("Please choose a bet type: ");
-            while(!start){
-            int bet = in.nextInt();
-            if(bet < 4)
-              race.startRace();
-            if(bet == 4){
-                System.out.println("Please choose 2 horses");
-                System.out.println("Horse 1: ");
-                int horse1 = in.nextInt();
-                
-                System.out.println();
-            }
-            }
+            race.chooseBetType();
+            
+            if(race.getBetType() < 4)
+              race.placeBet();
 
+            else if(race.getBetType() == 4)
+              race.placeBetBox(false);
+
+            else if(race.getBetType() == 5)
+              race.placeBetBox(true);
+
+            else if(race.getBetType() == 6)
+              race.placeBetExTri(false);
+
+            else if(race.getBetType() == 7)
+              race.placeBetExTri(true);
+
+            race.startRace();
             System.out.println("Race is Over");
+            
             gameOver = playAgain(in);
         }
 
@@ -44,6 +50,7 @@ public class HorseRacing {
     }
 
     private static boolean playAgain(Scanner in) {
+        System.out.print("\u001B[?25l");  // Hide the cursor
         boolean isValid = false;
         String result = "";
         while(!isValid){
