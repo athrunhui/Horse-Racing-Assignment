@@ -145,29 +145,13 @@ public class Race {
             HorseRacingHelper.updateTrack(numSpaces, horses);
             Horse horse = getNextHorse();
 
-            int mover = 5;
-            double lengthCheck = horse.getPreferredLength();
-            int ratingCheck = 0;
-            if (raceSurface == "Mud")
-                ratingCheck = horse.getMudRating();
-            if (raceSurface == "Grass")
-                ratingCheck = horse.getGrassRating();
-            if (raceSurface == "Dirt")
-                ratingCheck = horse.getDirtRating();
-            if (Math.abs(raceLength - lengthCheck) <= 1.5)
-                mover += 3;
-            if (ratingCheck >= 8)
-                mover += 3;
-            if (ratingCheck >= 6 && ratingCheck < 8)
-                mover += 2;
-            if (ratingCheck <= 5)
-                mover += 1;
+            int mover = setMovement(horse); //calls method to set horse movement
             
             if(!horse.raceFinished() && horse.getCurrentPosition() >= numSpaces){
                 results.add(horse);
                 horse.setRaceFinished(true);
             } else if(!horse.raceFinished()){
-                horse.incrementPosition((int)(Math.random() * mover)); //horse movement
+                horse.incrementPosition((int)((Math.random() * 4) + mover)); //generates random # with min being set in movement class
             }
 
             displayResults();
@@ -185,4 +169,26 @@ public class Race {
             horse.resetCurrenPosition();
         }
     }
+
+    private int setMovement(Horse horse){ //movement method
+        int mover = 0; // default is 0
+        double lengthCheck = horse.getPreferredLength(); //get horse pref length
+        int ratingCheck = 0;
+        if (raceSurface == "Mud") // depending on race surface, will get the horses rating
+            ratingCheck = horse.getMudRating(); 
+        if (raceSurface == "Grass")
+            ratingCheck = horse.getGrassRating();
+        if (raceSurface == "Dirt")
+            ratingCheck = horse.getDirtRating();
+        if (Math.abs(raceLength - lengthCheck) <= 1.5) //if pref length is 1.5 away from race length, raise min increment
+            mover += 2;
+        if (Math.abs(raceLength - lengthCheck) <= 3 && Math.abs(raceLength - lengthCheck) > 1.5) //if pref length is 3-1.5 away from race length, raise min increment
+            mover += 1;
+        if (ratingCheck >= 8) //if rating is over 8, raise min increment
+            mover += 3;
+        if (ratingCheck >= 6 && ratingCheck < 8) //if rating is 6-8, raise min increment
+            mover += 2;
+        return mover;
+      }
+
 }
