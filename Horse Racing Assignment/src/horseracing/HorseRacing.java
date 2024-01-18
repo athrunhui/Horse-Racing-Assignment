@@ -7,6 +7,7 @@ public class HorseRacing {
 
      public static void main(String[] args) {
         boolean start = false;
+        boolean four = false;
         Scanner in = new Scanner(System.in);    
         HorseRacingHelper.prepareHorseRacingSimulation();
         boolean gameOver = false;
@@ -32,8 +33,26 @@ public class HorseRacing {
             Race race = HorseRacingHelper.createRace(numHorsesInRace, raceLength, raceType);
             race.displayRaceInfo();
             race.displayBettingInfo();
+            race.chooseBetType();
+            
+            if(race.getBetType() < 4)
+              race.placeBet();
+
+            else if(race.getBetType() == 4)
+              race.placeBetBox(false);
+
+            else if(race.getBetType() == 5)
+              race.placeBetBox(true);
+
+            else if(race.getBetType() == 6)
+              race.placeBetExTri(false);
+
+            else if(race.getBetType() == 7)
+              race.placeBetExTri(true);
+
             race.startRace();
             System.out.println("Race is Over");
+            
             gameOver = playAgain(in);
         }
 

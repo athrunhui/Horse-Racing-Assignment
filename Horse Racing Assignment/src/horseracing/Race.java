@@ -2,6 +2,7 @@ package horseracing;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Race {
     private List<Horse> horses;
@@ -12,7 +13,15 @@ public class Race {
     private String spaceG;
     private String spaceD;
     private String spaceL;
+    private int horse;
+    private int horse1;
+    private int horse2;
+    private int horse3;
+    private int betAmt;
     private int wallet = 20;
+    private int betType;
+    private Bet Bet;
+    private Scanner in = new Scanner(System.in);
     
     private List<Horse> results;
 
@@ -47,10 +56,6 @@ public class Race {
         return raceSurface;
     }
 
-    
-    
-    
-
     public void displayRaceInfo() {
         System.out.println("Race Information:");
         System.out.println("Race Surface: " + raceSurface);
@@ -59,7 +64,7 @@ public class Race {
         System.out.println("|          name           |Mud Rating|Grass Rating|Dirt Rating|Fav Length|");
         System.out.println("+-------------------------+----------+------------+-----------+----------+");
         for (Horse horse : horses) {
-            if(horse.getNumber() == 10)
+            if(horse.getNumber() >= 10)
                 System.out.print("|" + horse.getNumber() + ". " + horse.getName());
             else
                 System.out.print("|" + horse.getNumber() + ". " + horse.getName() + " ");
@@ -121,7 +126,84 @@ public class Race {
 
     }
 
-    public void displayBoxExInfo(){
+    public void chooseBetType(){
+        System.out.print("Please choose a bet type: ");
+        this.betType = in.nextInt();
+    }
+
+    public int getBetType(){
+        return this.betType;
+    }
+
+    public void placeBet(){
+        System.out.print("Please choose a horse to bet on: ");
+        this.horse = in.nextInt();
+        while(this.betAmt > wallet){
+            int i = 0;
+            if(i > 0)
+              System.out.println("Invalid Amount");
+            System.out.print("Please choose a bet amount: ");
+            this.betAmt = in.nextInt();
+            i++;
+        }
+        
+        this.Bet = new Bet(this.betType, this.horse, this.betAmt);
+    }
+
+    public void placeBetBox(boolean three){
+        if(!three){
+        System.out.print("Please choose a horse to place 1st or 2nd: ");
+        this.horse1 = in.nextInt();
+        System.out.print("Please choose a second horse to place 1st or 2nd: ");
+        this.horse2 = in.nextInt();
+        } else if(three){
+            System.out.print("Please choose a horse to place 1st, 2nd, or 3rd: ");
+            this.horse1 = in.nextInt();
+            System.out.print("Please choose a second horse to place 1st, 2nd, or 3rd: ");
+            this.horse2 = in.nextInt();
+            System.out.print("Please choose a third horse to place 1st, 2nd, or 3rd: ");
+            this.horse3 = in.nextInt();
+        }
+        while(this.betAmt > wallet){
+        int i = 0;
+        if(i > 0)
+          System.out.println("Invalid Amount");
+        System.out.print("Please choose a bet amount: ");
+        this.betAmt = in.nextInt();
+        i++;
+        }
+        
+        if(!three)
+          this.Bet = new Bet(this.betType, this.horse1, this.horse2, this.betAmt);
+        else if(three)
+          this.Bet = new Bet(this.betType, this.horse1, this.horse2, this.horse3, this.betAmt);
+    }
+
+    public void placeBetExTri(boolean three){
+        in = new Scanner(System.in);
+        System.out.print("Please choose a horse to place 1st: ");
+        this.horse1 = in.nextInt();
+        System.out.print("Please choose a second horse to place 2nd: ");
+        this.horse2 = in.nextInt();
+        
+
+        if(three){
+            System.out.print("Please choose a third horse to place 3rd: ");
+            this.horse3 = in.nextInt();
+        }
+        while(this.betAmt > wallet){
+        System.out.print("Please choose a bet amount: ");
+        this.betAmt = in.nextInt();
+        }
+        if(!three)
+          this.Bet = new Bet(this.betType, this.horse1, this.horse2, this.betAmt);
+        
+        else if(three)
+          Bet = new Bet(this.betType, this.horse1, this.horse2, this.horse3, this.betAmt);        
+
+    }
+
+    public void displayOtherBettingInfo(){
         
     }
 
@@ -174,6 +256,7 @@ public class Race {
             }
 
             displayResults();
+            
 
             if (results.size() == horses.size())
                 done = true;
