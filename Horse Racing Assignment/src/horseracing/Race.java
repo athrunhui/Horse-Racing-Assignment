@@ -1,6 +1,7 @@
 package horseracing;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,6 +21,7 @@ public class Race {
     private int wallet = 20;
     private int betType;
     private Bet Bet;
+    private String result;
     private Scanner in = new Scanner(System.in);
     
     private List<Horse> results;
@@ -42,7 +44,8 @@ public class Race {
                   wallet += returnAmt;
                   System.out.println("Your win bet won $" + returnAmt);                
                 } else{                
-                    System.out.println("You lost your win bet.");
+                    System.out.println("You lost your $" + bet.getBetAmount() + " win bet on " +
+                    bet.getHorse());
                 }
             }
 
@@ -52,7 +55,8 @@ public class Race {
                   wallet += returnAmt;
                   System.out.println("Your place bet won $" + returnAmt); 
                 } else {
-                    System.out.println("You lost your place bet.");
+                    System.out.println("You lost your $" + bet.getBetAmount() + " place bet on " +
+                    bet.getHorse());
                 }
 
             }
@@ -63,7 +67,8 @@ public class Race {
                   wallet += returnAmt;
                   System.out.println("Your show bet won $" + returnAmt); 
                 } else{
-                    System.out.println("You lost your show bet.");
+                    System.out.println("You lost your $" + bet.getBetAmount() + "  show bet on " +
+                    bet.getHorse());
                 }
             }
 
@@ -74,7 +79,8 @@ public class Race {
                     wallet += returnAmt;
                     System.out.println("Your boxed exacta bet won $" + returnAmt); 
                 } else{
-                    System.out.println("You lost your boxed exacta bet.");
+                    System.out.println("You lost your $" + bet.getBetAmount() + " boxed exacta bet on " + bet.getHorse1() 
+                    + "and" + bet.getHorse2());
                 }
             }
 
@@ -84,9 +90,10 @@ public class Race {
                    (bet.getHorse3().equals(results.get(0)) || bet.getHorse3().equals(results.get(1)) || bet.getHorse3().equals(results.get(1)))){
                     returnAmt = bet.getBetAmount() * results.get(0).getShowOdds() * results.get(1).getShowOdds() * results.get(2).getShowOdds();
                     wallet += returnAmt;
-                    System.out.println("Your boxed trifecta bet won $" + returnAmt); 
+                    System.out.println("Your boxed trifecta bet won $" + returnAmt);  
                 } else{
-                    System.out.println("You lost your boxed trifecta bet.");
+                    System.out.println("You lost your $" + bet.getBetAmount() + " boxed trifecta bet on "
+                    + bet.getHorse1() + ", " + bet.getHorse2() + ", and " + bet.getHorse3());
                 }
             }
 
@@ -96,7 +103,8 @@ public class Race {
                     wallet += returnAmt;
                     System.out.println("Your exacta bet won $" + returnAmt); 
                 } else{
-                    System.out.println("You lost your exacta bet.");
+                    System.out.println("You lost your $" + bet.getBetAmount() + " exacta bet on " +
+                    bet.getHorse1() + " and " + bet.getHorse2());
                 }
             }
 
@@ -106,7 +114,8 @@ public class Race {
                     wallet += returnAmt;
                     System.out.println("Your trifecta bet won $" + returnAmt); 
                 } else{
-                    System.out.println("You lost your trifecta bet.");
+                    System.out.println("You lost your $" + bet.getBetAmount() + " trifecta bet on "
+                    + bet.getHorse1() + ", " + bet.getHorse2() + ", and " + bet.getHorse3());
                 }
             }            
         }
@@ -226,6 +235,22 @@ public class Race {
 
     public int getBetType(){
         return this.betType;
+    }
+
+    public String askDoneBets(Scanner in){
+        boolean isValid = false;
+        while(!isValid){
+            System.out.print("Bet again? (y/n): ");
+            try{
+                result = (in.nextLine()).toLowerCase(); //turns next thing put to lowercase
+                if ((result.equals("n"))||(result.equals("y"))){
+                    isValid = true; //if it is y or n continue to line 61
+                }
+            }catch(InputMismatchException badThing){
+                System.out.println("Please enter y or n."); //if it is not y or n, prompt again
+            }
+        }
+        return result;
     }
 
     public void placeBet(){
