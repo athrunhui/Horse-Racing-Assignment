@@ -20,8 +20,6 @@ public class HorseRacing {
            
             Race race = HorseRacingHelper.createRace(numHorsesInRace, raceLength, raceType);
             race.displayRaceInfo();
-
-            race.startRace();
             race.displayBettingInfo();
             race.chooseBetType();
 
