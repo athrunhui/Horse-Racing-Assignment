@@ -10,6 +10,9 @@ public class Horse{
         private int winOdd = 6;
         private int plOdd = 5;
         private int shOdd = 4;
+        private int winOdds;
+        private int placeOdds;
+        private int showOdds;
         private int bexOdd = 8;
         private int btriOdd = 7;
         private int exOdd = 10;
@@ -126,7 +129,12 @@ public class Horse{
                 else if(getPreferredLength() > 8.0)
                   this.winOdd -=1;
             }
+            this.winOdds = this.winOdd;
             return this.winOdd + win;
+        }
+
+        public int getWinOdds(){
+          return this.winOdds;
         }
 
         public String bettingPlace() {
@@ -163,7 +171,12 @@ public class Horse{
             }
             if(this.plOdd % 2 == 0)
                 return this.plOdd / 2 + "-1";
+            this.placeOdds = this.plOdd;
             return this.plOdd + place;
+        }
+
+        public int getPlaceOdds(){
+          return this.placeOdds;
         }
     
         public String bettingShow() {
@@ -200,10 +213,16 @@ public class Horse{
             }
             if(this.shOdd % 2 == 0)
                 return this.shOdd / 2 + "-1";
+            this.showOdds = this.shOdd;
             return this.shOdd + show;
+        }
+
+        public int getShowOdds(){
+          return this.showOdds;
         }
     
         public String bettingBE(){
+            
             return boxExacta;
         }
     

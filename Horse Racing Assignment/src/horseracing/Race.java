@@ -6,18 +6,17 @@ import java.util.Scanner;
 
 public class Race {
     private List<Horse> horses;
+    private List<Bet> bets;
     private double raceLength; // in furlongs
     private String raceSurface; // "grass", "dirt", or "mud" (Uses HorseRacingHelper constants)
     private int currentHorse;
+    private int currentBet;
     private String spaceM;
     private String spaceG;
     private String spaceD;
     private String spaceL;
-    private int horse;
-    private int horse1;
-    private int horse2;
-    private int horse3;
-    private int betAmt;
+    private int betAmt = 0;
+    private int returnAmt;
     private int wallet = 20;
     private int betType;
     private Bet Bet;
@@ -30,15 +29,104 @@ public class Race {
         this.raceLength = raceLength;
         this.raceSurface = raceSurface;
         this.currentHorse = 0;
+        this.currentBet = 0;
         this.results = new ArrayList<Horse>();
+        this.bets = new ArrayList<Bet>();
+    }
+
+    public void checkBets(){
+        for (Bet bet : bets) {
+            if (bet.getTypeBet() == 1){
+                if (bet.getHorse().equals(results.get(0))){
+                  returnAmt = bet.getBetAmount() * results.get(0).getWinOdds();
+                  wallet += returnAmt;
+                  System.out.println("Your win bet won $" + returnAmt);                
+                } else{                
+                    System.out.println("You lost your win bet.");
+                }
+            }
+
+            else if(bet.getTypeBet() == 2){
+                if(bet.getHorse().equals(results.get(0)) || bet.getHorse().equals(results.get(1))){
+                  returnAmt = bet.getBetAmount() * results.get(0).getPlaceOdds();
+                  wallet += returnAmt;
+                  System.out.println("Your place bet won $" + returnAmt); 
+                } else {
+                    System.out.println("You lost your place bet.");
+                }
+
+            }
+
+            else if(bet.getTypeBet() == 3){
+                if(bet.getHorse().equals(results.get(0)) || bet.getHorse().equals(results.get(1)) || bet.getHorse().equals(results.get(2))){
+                  returnAmt = bet.getBetAmount() * results.get(0).getShowOdds();
+                  wallet += returnAmt;
+                  System.out.println("Your show bet won $" + returnAmt); 
+                } else{
+                    System.out.println("You lost your show bet.");
+                }
+            }
+
+            else if(bet.getTypeBet() == 4){
+                if((bet.getHorse1().equals(results.get(0)) || bet.getHorse1().equals(results.get(1))) &&
+                   (bet.getHorse2().equals(results.get(0)) || bet.getHorse2().equals(results.get(1)))){
+                    returnAmt = bet.getBetAmount() * results.get(0).getPlaceOdds() * results.get(1).getPlaceOdds();
+                    wallet += returnAmt;
+                    System.out.println("Your boxed exacta bet won $" + returnAmt); 
+                } else{
+                    System.out.println("You lost your boxed exacta bet.");
+                }
+            }
+
+            else if(bet.getTypeBet() == 5){
+                if((bet.getHorse1().equals(results.get(0)) || bet.getHorse1().equals(results.get(1)) || bet.getHorse1().equals(results.get(2))) &&
+                   (bet.getHorse2().equals(results.get(0)) || bet.getHorse2().equals(results.get(1)) || bet.getHorse2().equals(results.get(2))) &&
+                   (bet.getHorse3().equals(results.get(0)) || bet.getHorse3().equals(results.get(1)) || bet.getHorse3().equals(results.get(1)))){
+                    returnAmt = bet.getBetAmount() * results.get(0).getShowOdds() * results.get(1).getShowOdds() * results.get(2).getShowOdds();
+                    wallet += returnAmt;
+                    System.out.println("Your boxed trifecta bet won $" + returnAmt); 
+                } else{
+                    System.out.println("You lost your boxed trifecta bet.");
+                }
+            }
+
+            else if(bet.getTypeBet() == 6){
+                if(bet.getHorse1().equals(results.get(0)) && bet.getHorse2().equals(results.get(1))){
+                    returnAmt = bet.getBetAmount() * results.get(0).getWinOdds() * results.get(1).getWinOdds();
+                    wallet += returnAmt;
+                    System.out.println("Your exacta bet won $" + returnAmt); 
+                } else{
+                    System.out.println("You lost your exacta bet.");
+                }
+            }
+
+            else if(bet.getTypeBet() == 7){
+                if(bet.getHorse1().equals(results.get(0)) && bet.getHorse2().equals(results.get(1)) && bet.getHorse3().equals(results.get(2))){
+                    returnAmt = bet.getBetAmount() * results.get(0).getWinOdds() * results.get(1).getWinOdds() * results.get(2).getWinOdds();
+                    wallet += returnAmt;
+                    System.out.println("Your trifecta bet won $" + returnAmt); 
+                } else{
+                    System.out.println("You lost your trifecta bet.");
+                }
+            }            
+        }
+        System.out.println();
     }
 
     public List<Horse> getHorses() {
         return horses;
     }
 
+    public List<Bet> getBets(){
+        return bets;
+    }
+
     public int numHorses(){
         return horses.size();
+    }
+
+    public int numBets(){
+        return bets.size();
     }
 
     public Horse getNextHorse(){
@@ -46,6 +134,12 @@ public class Race {
             currentHorse = 0;
         
         return horses.get(currentHorse++);
+    }
+
+    public Bet getNextBet(){
+        if(currentBet == bets.size())
+            currentBet = 0;
+        return bets.get(currentBet++);
     }
 
     public double getRaceLength() {
@@ -60,15 +154,15 @@ public class Race {
         System.out.println("Race Information:");
         System.out.println("Race Surface: " + raceSurface);
         System.out.println("Race Length: " + raceLength + " furlongs");
-        System.out.println("+-------------------------+----------+------------+-----------+----------+");
-        System.out.println("|          name           |Mud Rating|Grass Rating|Dirt Rating|Fav Length|");
-        System.out.println("+-------------------------+----------+------------+-----------+----------+");
+        System.out.println("+---------------------------+----------+------------+-----------+----------+");
+        System.out.println("|            name           |Mud Rating|Grass Rating|Dirt Rating|Fav Length|");
+        System.out.println("+---------------------------+----------+------------+-----------+----------+");
         for (Horse horse : horses) {
             if(horse.getNumber() >= 10)
                 System.out.print("|" + horse.getNumber() + ". " + horse.getName());
             else
                 System.out.print("|" + horse.getNumber() + ". " + horse.getName() + " ");
-            for(int j = 0; j < 21 - horse.getLength(); j++){
+            for(int j = 0; j < 23 - horse.getLength(); j++){
                 System.out.print(" ");    
             }
             if(horse.getMudRating() == 10 )
@@ -93,7 +187,7 @@ public class Race {
             System.out.print("|    " + spaceD + horse.getDirtRating() + "0%   ");
             System.out.println("|   " + spaceL + horse.getPreferredLength() + "   |");
         }
-        System.out.println("+------------------------------------------------------------------------+");
+        System.out.println("+--------------------------------------------------------------------------+");
         System.out.println();
     }
 
@@ -106,29 +200,28 @@ public class Race {
         System.out.println("6. Exacta - 2 horses that finish 1st and 2nd in a specific order");
         System.out.println("7. Trifecta - 3 horses finishing 1st, 2nd, and 3rd in the correct order");
         System.out.println();
-        System.out.println("+-----------------------+---+---+---+");
-        System.out.println("|        name           | 1 | 2 | 3 |");
-        System.out.println("+-----------------------+---+---+---+");
+        System.out.println("+---------------------------+---+---+---+");
+        System.out.println("|            name           | 1 | 2 | 3 |");
+        System.out.println("+---------------------------+---+---+---+");
         for (Horse horse : horses) {
-            System.out.print("|" + horse.getName());
+            if(horse.getNumber() >= 10)
+              System.out.print("|" + horse.getNumber() + ". " + horse.getName());
+            else
+              System.out.print("|" + horse.getNumber() + ". " + horse.getName() + " ");
             for(int j = 0; j < 23 - horse.getLength(); j++){
                 System.out.print(" ");    
             }
             System.out.print("|" + horse.bettingWin());
             System.out.print("|" + horse.bettingPlace());
             System.out.print("|" + horse.bettingShow());
-            System.out.println("|");           
-            /*System.out.print("|" + horse.bettingShow());
-            System.out.print("|" + horse.bettingShow());
-            System.out.println("|" + horse.bettingShow() + "|");*/
+            System.out.println("|");
         }
-        System.out.println("+-----------------------------------+");
+        System.out.println("+---------------------------------------+");
 
     }
 
     public void chooseBetType(){
-        System.out.print("Please choose a bet type: ");
-        this.betType = in.nextInt();
+        this.betType = HorseRacingHelper.getNumericInput(1, 7, in, "Please choose a bet type: ");
     }
 
     public int getBetType(){
@@ -136,75 +229,75 @@ public class Race {
     }
 
     public void placeBet(){
-        System.out.print("Please choose a horse to bet on: ");
-        this.horse = in.nextInt();
-        while(this.betAmt > wallet){
-            int i = 0;
-            if(i > 0)
-              System.out.println("Invalid Amount");
-            System.out.print("Please choose a bet amount: ");
-            this.betAmt = in.nextInt();
-            i++;
-        }
-        
-        this.Bet = new Bet(this.betType, this.horse, this.betAmt);
+        int horseNumber = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse to bet on: ");
+        Horse horse = horses.get(horseNumber - 1);
+        System.out.println("You have $" + wallet);
+        this.betAmt = HorseRacingHelper.getNumericInput(1, wallet, in, "Please choose a bet amount: ");   
+        wallet -= this.betAmt;     
+        bets.add(new Bet(this.betType, horse, this.betAmt));
     }
 
-    public void placeBetBox(boolean three){
-        if(!three){
-        System.out.print("Please choose a horse to place 1st or 2nd: ");
-        this.horse1 = in.nextInt();
-        System.out.print("Please choose a second horse to place 1st or 2nd: ");
-        this.horse2 = in.nextInt();
-        } else if(three){
-            System.out.print("Please choose a horse to place 1st, 2nd, or 3rd: ");
-            this.horse1 = in.nextInt();
-            System.out.print("Please choose a second horse to place 1st, 2nd, or 3rd: ");
-            this.horse2 = in.nextInt();
-            System.out.print("Please choose a third horse to place 1st, 2nd, or 3rd: ");
-            this.horse3 = in.nextInt();
-        }
-        while(this.betAmt > wallet){
-        int i = 0;
-        if(i > 0)
-          System.out.println("Invalid Amount");
-        System.out.print("Please choose a bet amount: ");
-        this.betAmt = in.nextInt();
-        i++;
-        }
-        
-        if(!three)
-          this.Bet = new Bet(this.betType, this.horse1, this.horse2, this.betAmt);
-        else if(three)
-          this.Bet = new Bet(this.betType, this.horse1, this.horse2, this.horse3, this.betAmt);
+    public void placeBetBoxEx(){
+        int horseNumber1 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse place 1st or 2nd: ");
+        Horse horse1 = horses.get(horseNumber1 - 1);
+        int horseNumber2 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a second horse place 1st or 2nd: ");
+        Horse horse2 = horses.get(horseNumber2 - 1);
+
+        System.out.println("You have $" + wallet);
+        this.betAmt = HorseRacingHelper.getNumericInput(1, wallet, in, "Please choose a bet amount: ");   
+        wallet -= this.betAmt;
+        bets.add(new Bet(this.betType, horse1, horse2, this.betAmt));
+          
     }
 
-    public void placeBetExTri(boolean three){
-        in = new Scanner(System.in);
-        System.out.print("Please choose a horse to place 1st: ");
-        this.horse1 = in.nextInt();
-        System.out.print("Please choose a second horse to place 2nd: ");
-        this.horse2 = in.nextInt();
+    public void placeBetBoxTri(){
         
+        int horseNumber1 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse place 1st, 2nd, or 3rd: ");
+        Horse horse1 = horses.get(horseNumber1 - 1);
+        int horseNumber2 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a second horse place 1st, 2nd, or 3rd: ");
+        Horse horse2 = horses.get(horseNumber2 - 1);
+        int horseNumber3 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a third horse place 1st, 2nd, or 3rd: ");
+        Horse horse3 = horses.get(horseNumber3 - 1);
 
-        if(three){
-            System.out.print("Please choose a third horse to place 3rd: ");
-            this.horse3 = in.nextInt();
-        }
-        while(this.betAmt > wallet){
-        System.out.print("Please choose a bet amount: ");
-        this.betAmt = in.nextInt();
-        }
-        if(!three)
-          this.Bet = new Bet(this.betType, this.horse1, this.horse2, this.betAmt);
-        
-        else if(three)
-          Bet = new Bet(this.betType, this.horse1, this.horse2, this.horse3, this.betAmt);        
-
+        System.out.println("You have $" + wallet);
+        this.betAmt = HorseRacingHelper.getNumericInput(1, wallet, in, "Please choose a bet amount: ");   
+        wallet -= this.betAmt;
+        bets.add(new Bet(this.betType, horse1, horse2, horse3, this.betAmt));
     }
 
-    public void displayOtherBettingInfo(){
+    public void placeBetEx(){
+        int horseNumber1 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse to place 1st: ");
+        Horse horse1 = horses.get(horseNumber1 - 1);
+        int horseNumber2 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse to place 2nd: ");
+        Horse horse2 = horses.get(horseNumber2 - 1);
         
+
+        System.out.println("You have $" + wallet);
+        this.betAmt = HorseRacingHelper.getNumericInput(1, wallet, in, "Please choose a bet amount: ");   
+        wallet -= this.betAmt;
+
+        bets.add(new Bet(this.betType, horse1, horse2, this.betAmt));       
+    }
+
+    public void placeBetTri(){
+        int horseNumber1 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse to place 1st: ");
+        Horse horse1 = horses.get(horseNumber1 - 1);
+        int horseNumber2 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse to place 2nd: ");
+        Horse horse2 = horses.get(horseNumber2 - 1);
+        int horseNumber3 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse place 3rd: ");
+        Horse horse3 = horses.get(horseNumber3 - 1);
+        
+
+        System.out.println("You have $" + wallet);
+        this.betAmt = HorseRacingHelper.getNumericInput(1, wallet, in, "Please choose a bet amount: ");   
+        wallet -= this.betAmt;
+
+        bets.add(new Bet(this.betType, horse1, horse2, horse3, this.betAmt));       
+    }
+
+    public void displayBetResults(){
+        System.out.println("Bet Results");
+        System.out.println("-----------");        
     }
 
     public void displayResults(){
@@ -213,6 +306,7 @@ public class Race {
         for(int i=0; i<results.size(); i++){
             System.out.println((i+1) + ": " + results.get(i).getName() + "("+results.get(i).getNumber()+")");
         }
+        System.out.println();
     }
 
 
@@ -261,6 +355,8 @@ public class Race {
             if (results.size() == horses.size())
                 done = true;
         }
+        
+        checkBets();
 
         HorseRacingHelper.stopMusic();
     }

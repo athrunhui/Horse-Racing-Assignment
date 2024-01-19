@@ -34,22 +34,22 @@ public class HorseRacing {
             race.displayRaceInfo();
             race.displayBettingInfo();
             race.chooseBetType();
-            
+
             if(race.getBetType() < 4)
               race.placeBet();
 
             else if(race.getBetType() == 4)
-              race.placeBetBox(false);
+              race.placeBetBoxEx();
 
             else if(race.getBetType() == 5)
-              race.placeBetBox(true);
+              race.placeBetBoxTri();
 
             else if(race.getBetType() == 6)
-              race.placeBetExTri(false);
+              race.placeBetEx();
 
             else if(race.getBetType() == 7)
-              race.placeBetExTri(true);
-
+              race.placeBetTri();
+            System.out.print("\u001B[?25l");  // Hide the cursor
             race.startRace();
             System.out.println("Race is Over");
             

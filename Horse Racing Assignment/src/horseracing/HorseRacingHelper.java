@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -73,6 +74,28 @@ public class HorseRacingHelper {
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
+    }
+
+    public static int getNumericInput(int min, int max, Scanner in, String prompt) {
+        boolean isValid = false;
+        int result = 0;
+
+        while(!isValid){
+            System.out.print(prompt);
+            
+            try{
+                result = Integer.parseInt(in.nextLine());
+                if (result < min || result > max)
+                    System.out.println("Not in the specified range.");
+                else
+                    isValid = true;
+            }catch(NumberFormatException badThing){
+                System.out.println("Numbers only!");
+            }
+
+        }
+
+        return result;
     }
 
     public List<Horse> getHorses(int numHorses) {
