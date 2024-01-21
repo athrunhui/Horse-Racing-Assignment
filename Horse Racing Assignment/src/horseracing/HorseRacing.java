@@ -28,6 +28,7 @@ public class HorseRacing {
             System.out.println("Race is Over");
             
             gameOver = playAgain(in);
+            doneBets = gameOver;
         }
 
         

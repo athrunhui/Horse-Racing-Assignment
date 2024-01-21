@@ -96,7 +96,7 @@ public class Horse{
          * the race length, their odds will go down by one
          * 
          * if the horse's preferred length is short and the race is long
-         * (or vice versa), their odds will go up by
+         * (or vice versa), their odds will go up by one
          * 
          */
         public String bettingWin() {
