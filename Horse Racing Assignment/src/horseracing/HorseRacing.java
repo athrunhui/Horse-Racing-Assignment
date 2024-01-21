@@ -52,7 +52,8 @@ public class HorseRacing {
         if (result.equals("n")){ //if answer is n end game, otherwise play new game
             System.out.println("Thanks for playing.");
             return true;
-        }    
+        }
+            
         return false;
 
     }

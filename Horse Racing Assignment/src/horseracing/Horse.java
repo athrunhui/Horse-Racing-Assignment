@@ -15,11 +15,6 @@ public class Horse{
         private String place = "-2";
         private String show = "-2";
 
-        private int winOdds;
-        private int placeOdds;
-        private int showOdds;
-
-
         private int currentPosition;
         private boolean finishedRace;
         private int number;
@@ -177,7 +172,6 @@ public class Horse{
             }
             if(this.plOdd % 2 == 0)
                 return this.plOdd / 2 + "-1";
-            this.placeOdds = this.plOdd;
             return this.plOdd + place;
         }
 
@@ -219,7 +213,6 @@ public class Horse{
             }
             if(this.shOdd % 2 == 0)
                 return this.shOdd / 2 + "-1";
-            this.showOdds = this.shOdd;
             return this.shOdd + show;
         }
 
