@@ -6,46 +6,22 @@ import java.util.Scanner;
 public class HorseRacing {
 
      public static void main(String[] args) {
-        boolean start = false;
-        boolean four = false;
+        Scanner in = new Scanner(System.in);
         boolean doneBets = false;
-        Scanner in = new Scanner(System.in);    
         HorseRacingHelper.prepareHorseRacingSimulation();
         boolean gameOver = false;
         while(!gameOver){
             HorseRacingHelper.clearConsole();
-            int numHorsesInRace = (int)(Math.random()*7)+5;
+            int numHorsesInRace = (int)(Math.random()*7)+5; // 5-11 horses in a race
            
-            int raceLength = HorseRacing.setRaceLength();
-            int raceType = HorseRacing.setRaceType();
+            int raceLength = HorseRacing.setRaceLength();   // sets a random race length
+            int raceType = HorseRacing.setRaceType();       // sets a random race terrain
            
             Race race = HorseRacingHelper.createRace(numHorsesInRace, raceLength, raceType);
-            race.displayRaceInfo();
-            race.displayBettingInfo();
-            while(!doneBets){
-            race.chooseBetType();
-
-            if(race.getBetType() < 4)
-              race.placeBet();
-
-            else if(race.getBetType() == 4)
-              race.placeBetBoxEx();
-
-            else if(race.getBetType() == 5)
-              race.placeBetBoxTri();
-
-            else if(race.getBetType() == 6)
-              race.placeBetEx();
-
-            else if(race.getBetType() == 7)
-              race.placeBetTri();
-
-
-            if(race.askDoneBets(in).equals("y"))
-              doneBets = false;
-              
-            else if(race.askDoneBets(in).equals("n"))
-              doneBets = true;
+            race.displayRaceInfo();         // displays the race type, race length, all of the horses and stats
+            race.displayBettingInfo();      // displays the win, place, and show odds for each horse   
+            while(!doneBets){               // allows the player to place multiple bets
+                doneBets = race.betType(in).equals("n"); 
             }
             System.out.print("\u001B[?25l");  // Hide the cursor
             race.startRace();

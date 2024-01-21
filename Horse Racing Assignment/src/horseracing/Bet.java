@@ -7,6 +7,7 @@ public class Bet {
     private Horse horse2;
     private Horse horse3;
     private int betAmount;
+    private int returnAmount;
 
     public int getTypeBet() {
         return typeBet;
@@ -36,21 +37,22 @@ public class Bet {
         return returnAmount;
     }
 
-    private int returnAmount;
-
-    public Bet(int typeBet, Horse horse, int betAmount){
+    // constructs win, place, and show bets
+    public Bet(int typeBet, Horse horse, int betAmount){    
         this.typeBet = typeBet;
         this.horse = horse;
         this.betAmount = betAmount;
     }
     
-    public Bet(int typeBet, Horse horse1, Horse horse2, int betAmount){
+    // constructs boxed exacta and exacta bets
+    public Bet(int typeBet, Horse horse1, Horse horse2, int betAmount){     
         this.typeBet = typeBet;
         this.horse1 = horse1;
         this.horse2 = horse2;
         this.betAmount = betAmount;
     }
 
+    // constructs boxed trifecta and trifecta bets
     public Bet(int typeBet, Horse horse1, Horse horse2, Horse horse3, int betAmount){
         this.typeBet = typeBet;
         this.horse1 = horse1;

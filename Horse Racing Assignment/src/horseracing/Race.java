@@ -20,7 +20,6 @@ public class Race {
     private int returnAmt;
     private int wallet = 20;
     private int betType;
-    private Bet Bet;
     private String result;
     private Scanner in = new Scanner(System.in);
     
@@ -33,92 +32,110 @@ public class Race {
         this.currentHorse = 0;
         this.currentBet = 0;
         this.results = new ArrayList<Horse>();
-        this.bets = new ArrayList<Bet>();
+        this.bets = new ArrayList<Bet>(); // creates somewhere to hold all of the betting information
     }
 
     public void checkBets(){
         for (Bet bet : bets) {
-            if (bet.getTypeBet() == 1){
-                if (bet.getHorse().equals(results.get(0))){
-                  returnAmt = bet.getBetAmount() * results.get(0).getWinOdds();
-                  wallet += returnAmt;
-                  System.out.println("Your win bet won $" + returnAmt);                
+            if (bet.getTypeBet() == 1){                                         // if it is a "win" bet
+                if (bet.getHorse().equals(results.get(0))){                     // if the horse got first (0)
+                  returnAmt = bet.getBetAmount() * bet.getHorse().getWinOdds(); // multiplies bet amount by win odds
+
+                  wallet += returnAmt;                                          // adds money to wallet
+                  System.out.println("Your win bet on " + bet.getHorse().getName() + " won $" + returnAmt);                
                 } else{                
-                    System.out.println("You lost your $" + bet.getBetAmount() + " win bet on " +
-                    bet.getHorse());
-                }
+                    System.out.println("You lost your $" + bet.getBetAmount() + " win bet on " + bet.getHorse().getName());
+                } // prints player outcome
             }
 
-            else if(bet.getTypeBet() == 2){
-                if(bet.getHorse().equals(results.get(0)) || bet.getHorse().equals(results.get(1))){
-                  returnAmt = bet.getBetAmount() * results.get(0).getPlaceOdds();
+        else if(bet.getTypeBet() == 2){     // if it is a "place bet"
+                if(bet.getHorse().equals(results.get(0)) || bet.getHorse().equals(results.get(1))){  // if the horse got 1st or 2nd
+                  returnAmt = bet.getBetAmount() * bet.getHorse().getPlaceOdds();                    // multiplies bet by place odds
+
+                  if(bet.getHorse().bettingPlace().substring(1).equals("-2"))                        // divides return amt by 2 if
+                    returnAmt /= 2;                                                                  // the bet was X-2
+
                   wallet += returnAmt;
-                  System.out.println("Your place bet won $" + returnAmt); 
+                  System.out.println("Your place bet on " + bet.getHorse().getName() + " won $" + returnAmt); 
                 } else {
-                    System.out.println("You lost your $" + bet.getBetAmount() + " place bet on " +
-                    bet.getHorse());
-                }
+                    System.out.println("You lost your $" + bet.getBetAmount() + " place bet on " + bet.getHorse().getName());
+                } // prints player outcome
 
             }
 
-            else if(bet.getTypeBet() == 3){
+            else if(bet.getTypeBet() == 3){ // if the bet was a "show" bet,         if the horse got 1st, 2nd, or 3rd, the horse 
                 if(bet.getHorse().equals(results.get(0)) || bet.getHorse().equals(results.get(1)) || bet.getHorse().equals(results.get(2))){
-                  returnAmt = bet.getBetAmount() * results.get(0).getShowOdds();
+                  returnAmt = bet.getBetAmount() * bet.getHorse().getShowOdds(); // multiplies the bet by the show odds 
+
+                  if(bet.getHorse().bettingShow().substring(1).equals("-2"))     // divides the return by 2 if
+                    returnAmt /= 2;                                              // the show odd was X-2
+                    
                   wallet += returnAmt;
-                  System.out.println("Your show bet won $" + returnAmt); 
+                  System.out.println("Your show bet on " + bet.getHorse().getName() + " won $" + returnAmt); 
                 } else{
                     System.out.println("You lost your $" + bet.getBetAmount() + "  show bet on " +
-                    bet.getHorse());
-                }
+                    bet.getHorse().getName());
+                } // prints player outcome
             }
 
-            else if(bet.getTypeBet() == 4){
-                if((bet.getHorse1().equals(results.get(0)) || bet.getHorse1().equals(results.get(1))) &&
-                   (bet.getHorse2().equals(results.get(0)) || bet.getHorse2().equals(results.get(1)))){
-                    returnAmt = bet.getBetAmount() * results.get(0).getPlaceOdds() * results.get(1).getPlaceOdds();
+            else if(bet.getTypeBet() == 4){ // if the bet was a "boxed exacta" bet
+                if((bet.getHorse1().equals(results.get(0)) || bet.getHorse1().equals(results.get(1))) &&     // if the horses got 1st or 2nd
+                   (bet.getHorse2().equals(results.get(0)) || bet.getHorse2().equals(results.get(1)))){      // the bet is mulltiplied by
+                    returnAmt = bet.getBetAmount() * bet.getHorse1().getPlaceOdds() * bet.getHorse2().getPlaceOdds(); // each place odd
                     wallet += returnAmt;
-                    System.out.println("Your boxed exacta bet won $" + returnAmt); 
+                    System.out.println("Your boxed exacta bet on " + bet.getHorse1().getName() + " and " + 
+                    bet.getHorse2().getName() +  " won $" + returnAmt); 
                 } else{
-                    System.out.println("You lost your $" + bet.getBetAmount() + " boxed exacta bet on " + bet.getHorse1() 
-                    + "and" + bet.getHorse2());
-                }
+                    System.out.println("You lost your $" + bet.getBetAmount() + " boxed exacta bet on " + bet.getHorse1().getName() + 
+                    "and" + bet.getHorse2().getName());
+                } // prints player outcome
             }
 
-            else if(bet.getTypeBet() == 5){
+            else if(bet.getTypeBet() == 5){ // if the bet was a "boxed trifecta bet"
                 if((bet.getHorse1().equals(results.get(0)) || bet.getHorse1().equals(results.get(1)) || bet.getHorse1().equals(results.get(2))) &&
                    (bet.getHorse2().equals(results.get(0)) || bet.getHorse2().equals(results.get(1)) || bet.getHorse2().equals(results.get(2))) &&
-                   (bet.getHorse3().equals(results.get(0)) || bet.getHorse3().equals(results.get(1)) || bet.getHorse3().equals(results.get(1)))){
-                    returnAmt = bet.getBetAmount() * results.get(0).getShowOdds() * results.get(1).getShowOdds() * results.get(2).getShowOdds();
+                   (bet.getHorse3().equals(results.get(0)) || bet.getHorse3().equals(results.get(1)) || bet.getHorse3().equals(results.get(2)))){
+                    // if the 3 horses bet on got either 1st, 2nd, or 3rd, the bet will be multiplied by each of their show odds
+
+                    returnAmt = bet.getBetAmount() * bet.getHorse1().getShowOdds() * bet.getHorse2().getShowOdds() * bet.getHorse3().getShowOdds();
                     wallet += returnAmt;
-                    System.out.println("Your boxed trifecta bet won $" + returnAmt);  
+                    System.out.println("Your boxed trifecta bet on " + bet.getHorse1().getName() + ", " + bet.getHorse2().getName() +
+                    ", and " + bet.getHorse3().getName() + " won $" + returnAmt);  
                 } else{
                     System.out.println("You lost your $" + bet.getBetAmount() + " boxed trifecta bet on "
-                    + bet.getHorse1() + ", " + bet.getHorse2() + ", and " + bet.getHorse3());
-                }
+                    + bet.getHorse1().getName() + ", " + bet.getHorse2().getName() + ", and " + bet.getHorse3().getName());
+                } // prints player outcome
             }
 
-            else if(bet.getTypeBet() == 6){
-                if(bet.getHorse1().equals(results.get(0)) && bet.getHorse2().equals(results.get(1))){
-                    returnAmt = bet.getBetAmount() * results.get(0).getWinOdds() * results.get(1).getWinOdds();
+            else if(bet.getTypeBet() == 6){ // if the bet was an "exacta" bet
+                if(bet.getHorse1().equals(results.get(0)) && bet.getHorse2().equals(results.get(1))){ 
+                // if the horses got 1st and 2nd in the correct order, the bet will be multiplied by each of their win odds
+
+                    returnAmt = bet.getBetAmount() * bet.getHorse1().getWinOdds() * bet.getHorse2().getWinOdds();
                     wallet += returnAmt;
-                    System.out.println("Your exacta bet won $" + returnAmt); 
+                    System.out.println("Your exacta bet on " + bet.getHorse1().getName() + " and " + bet.getHorse2().getName() +
+                    " won $" + returnAmt); 
                 } else{
-                    System.out.println("You lost your $" + bet.getBetAmount() + " exacta bet on " +
-                    bet.getHorse1() + " and " + bet.getHorse2());
-                }
+                    System.out.println("You lost your $" + bet.getBetAmount() + " exacta bet on " + bet.getHorse1().getName() + " and " + bet.getHorse2().getName());
+                } // prints player outcome
             }
 
-            else if(bet.getTypeBet() == 7){
+            else if(bet.getTypeBet() == 7){ // if the bet was a "trifecta" bet
                 if(bet.getHorse1().equals(results.get(0)) && bet.getHorse2().equals(results.get(1)) && bet.getHorse3().equals(results.get(2))){
-                    returnAmt = bet.getBetAmount() * results.get(0).getWinOdds() * results.get(1).getWinOdds() * results.get(2).getWinOdds();
+                // if the horses got 1st, 2nd, and 3rd in the correct order, the bet will be multiplied by each of their win odds
+
+                    returnAmt = bet.getBetAmount() * bet.getHorse1().getWinOdds() * bet.getHorse2().getWinOdds() * bet.getHorse3().getWinOdds();
                     wallet += returnAmt;
-                    System.out.println("Your trifecta bet won $" + returnAmt); 
+                    System.out.println("Your trifecta bet on " + bet.getHorse1().getName() + ", " + bet.getHorse2().getName() +
+                    ", and " + bet.getHorse3().getName() + " won $" + returnAmt); 
                 } else{
-                    System.out.println("You lost your $" + bet.getBetAmount() + " trifecta bet on "
-                    + bet.getHorse1() + ", " + bet.getHorse2() + ", and " + bet.getHorse3());
-                }
+                    System.out.println("You lost your $" + bet.getBetAmount() + " trifecta bet on " + bet.getHorse1().getName() + 
+                    ", " + bet.getHorse2().getName() + ", and " + bet.getHorse3().getName());
+                } // prints player outcome
             }            
         }
+        System.out.println();
+        System.out.println("Wallet: $" + wallet); // prints amt of money in the wallet
         System.out.println();
     }
 
@@ -130,22 +147,22 @@ public class Race {
         return bets;
     }
 
-    public int numHorses(){
+    public int numHorses(){ // number of horses in the list
         return horses.size();
     }
 
-    public int numBets(){
+    public int numBets(){ // number of bets in the list
         return bets.size();
     }
 
-    public Horse getNextHorse(){
+    public Horse getNextHorse(){ // gets the next horse in the list starting at 0
         if (currentHorse == horses.size())
             currentHorse = 0;
         
         return horses.get(currentHorse++);
     }
 
-    public Bet getNextBet(){
+    public Bet getNextBet(){ // gets the next bet in the list starting at 0
         if(currentBet == bets.size())
             currentBet = 0;
         return bets.get(currentBet++);
@@ -159,7 +176,7 @@ public class Race {
         return raceSurface;
     }
 
-    public void displayRaceInfo() {
+    public void displayRaceInfo() { // displays each horse and their respective stats
         System.out.println("Race Information:");
         System.out.println("Race Surface: " + raceSurface);
         System.out.println("Race Length: " + raceLength + " furlongs");
@@ -168,9 +185,9 @@ public class Race {
         System.out.println("+---------------------------+----------+------------+-----------+----------+");
         for (Horse horse : horses) {
             if(horse.getNumber() >= 10)
-                System.out.print("|" + horse.getNumber() + ". " + horse.getName());
+                System.out.print("|" + horse.getNumber() + ". " + horse.getName()); // allows the horse to fit in the space of the column
             else
-                System.out.print("|" + horse.getNumber() + ". " + horse.getName() + " ");
+                System.out.print("|" + horse.getNumber() + ". " + horse.getName() + " "); // prints the number and name into the column
             for(int j = 0; j < 23 - horse.getLength(); j++){
                 System.out.print(" ");    
             }
@@ -191,8 +208,8 @@ public class Race {
             else   
                 spaceL = " ";
             
-            System.out.print("|   " + spaceM + horse.getMudRating() + "0%   ");
-            System.out.print("|    " + spaceG + horse.getGrassRating() + "0%    ");
+            System.out.print("|   " + spaceM + horse.getMudRating() + "0%   ");         // adds each horse's stats to their
+            System.out.print("|    " + spaceG + horse.getGrassRating() + "0%    ");     // respective columns
             System.out.print("|    " + spaceD + horse.getDirtRating() + "0%   ");
             System.out.println("|   " + spaceL + horse.getPreferredLength() + "   |");
         }
@@ -200,18 +217,18 @@ public class Race {
         System.out.println();
     }
 
-    public void displayBettingInfo(){
+    public void displayBettingInfo(){ // displays each horse and their odds of getting the win, place, and show bet
         System.out.println("1. Win - A horse finishing 1st");
         System.out.println("2. Place - A horse finishing 1st or 2nd");
         System.out.println("3. Show - A horse finishing in the top 3");
         System.out.println("4. Boxed Exacta - 2 horses finishing 1st or 2nd in any order");
         System.out.println("5. Boxed Trifecta - 3 horses finishing in the top 3");
         System.out.println("6. Exacta - 2 horses that finish 1st and 2nd in a specific order");
-        System.out.println("7. Trifecta - 3 horses finishing 1st, 2nd, and 3rd in the correct order");
+        System.out.println("7. Trifecta - 3 horses finishing 1st, 2nd, and 3rd in the specific order");
         System.out.println();
-        System.out.println("+---------------------------+---+---+---+");
-        System.out.println("|            name           | 1 | 2 | 3 |");
-        System.out.println("+---------------------------+---+---+---+");
+        System.out.println("+---------------------------+-----+-------+------+");
+        System.out.println("|            name           | Win | Place | Show |");
+        System.out.println("+---------------------------+-----+-------+------+");
         for (Horse horse : horses) {
             if(horse.getNumber() >= 10)
               System.out.print("|" + horse.getNumber() + ". " + horse.getName());
@@ -220,21 +237,56 @@ public class Race {
             for(int j = 0; j < 23 - horse.getLength(); j++){
                 System.out.print(" ");    
             }
-            System.out.print("|" + horse.bettingWin());
-            System.out.print("|" + horse.bettingPlace());
-            System.out.print("|" + horse.bettingShow());
+            System.out.print("| " + horse.bettingWin() + " ");
+            System.out.print("|  " + horse.bettingPlace() + "  ");
+            System.out.print("|  " + horse.bettingShow() + " ");
             System.out.println("|");
         }
-        System.out.println("+---------------------------------------+");
-
+        System.out.println("+------------------------------------------------+");
+        System.out.println();
+        System.out.println("If you win the boxed exacta, your bet will be multiplied by " +
+                            "each horse's place odd");
+        System.out.println("If you win the boxed trifecta, your bet will be multiplied by " +
+                            "each horse's show odd");
+        System.out.println("If you win the exacta, your bet will be multiplied by " +
+                            "each horse's win odd");
+        System.out.println("If you win the trifecta, your bet will be multiplied by " +
+                            "each horse's win odd");
+        System.out.println();
+        System.out.println("You have $" + wallet); // prints the money in the player's wallet.
+        System.out.println();
     }
 
-    public void chooseBetType(){
+    public void chooseBetType(){ // prompts the user to choose a bet type from 1-7
         this.betType = HorseRacingHelper.getNumericInput(1, 7, in, "Please choose a bet type: ");
     }
 
     public int getBetType(){
         return this.betType;
+    }
+
+    public String betType(Scanner in){
+        chooseBetType();
+
+        if (getBetType() < 4)
+          placeBet();
+
+        else if(getBetType() == 4)
+          placeBetBoxEx();
+
+        else if(getBetType() == 5)
+          placeBetBoxTri();
+
+        else if(getBetType() == 6)
+          placeBetEx();
+
+        else if(getBetType() == 7)
+          placeBetTri();
+
+        if(askDoneBets(in).equals("n"))
+          return "n";  
+        return "y";
+        
     }
 
     public String askDoneBets(Scanner in){

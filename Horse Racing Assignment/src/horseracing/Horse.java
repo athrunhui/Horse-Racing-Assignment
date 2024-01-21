@@ -7,23 +7,17 @@ public class Horse{
         private int grassRating;
         private int dirtRating;
         private double preferredLength;
-        private int winOdd = 6;
-        private int plOdd = 5;
-        private int shOdd = 4;
-        private int winOdds;
-        private int placeOdds;
-        private int showOdds;
-        private int bexOdd = 8;
-        private int btriOdd = 7;
-        private int exOdd = 10;
-        private int triOdd = 9;
+
+        private int winOdd = 5;          // win odds start at 5-1 and go up or down from there
+        private int plOdd = 5;           // place odds start at 5-2 and go up or down from there
+        private int shOdd = 4;           // show odds start at 4-2 and go up or down from there
         private String win = "-1";
         private String place = "-2";
         private String show = "-2";
-        private String boxExacta = "-1";
-        private String boxTrifecta = "-1";
-        private String exacta = "-1";
-        private String trifecta = "-1";
+
+        private int winOdds;
+        private int placeOdds;
+        private int showOdds;
 
 
         private int currentPosition;
@@ -42,7 +36,7 @@ public class Horse{
         }
         
         public int getLength(){
-            return this.name.length();
+            return this.name.length();  // get the length of the horse's name
             
         }
         public void setNumber(int number){
@@ -97,9 +91,22 @@ public class Horse{
             
         }
 
+        /* if the horse's stats for the terrain are higher than 7, 
+         * their odds will go down by one.
+         * 
+         * if the horse's stats for the terrain are lower than 4,
+         * their odds will go up by one.
+         * 
+         * if the horse's preferred length (short, middle, long) matches
+         * the race length, their odds will go down by one
+         * 
+         * if the horse's preferred length is short and the race is long
+         * (or vice versa), their odds will go up by
+         * 
+         */
         public String bettingWin() {
             if(HorseRacingHelper.getTerrain() == 0){
-                if(getGrassRating() > 7)
+                if(getGrassRating() > 7) 
                   this.winOdd -= 1;
     
                 else if(getGrassRating() < 4)
@@ -129,12 +136,11 @@ public class Horse{
                 else if(getPreferredLength() > 8.0)
                   this.winOdd -=1;
             }
-            this.winOdds = this.winOdd;
             return this.winOdd + win;
         }
 
         public int getWinOdds(){
-          return this.winOdds;
+          return Integer.parseInt(bettingWin().substring(0,1));
         }
 
         public String bettingPlace() {
@@ -176,7 +182,7 @@ public class Horse{
         }
 
         public int getPlaceOdds(){
-          return this.placeOdds;
+          return Integer.parseInt(bettingPlace().substring(0,1));
         }
     
         public String bettingShow() {
@@ -218,24 +224,6 @@ public class Horse{
         }
 
         public int getShowOdds(){
-          return this.showOdds;
+          return Integer.parseInt(bettingShow().substring(0,1));
         }
-    
-        public String bettingBE(){
-            
-            return boxExacta;
-        }
-    
-        public String bettingBT() {
-            return boxTrifecta;
-        }
-    
-        public String bettingEx(){
-            return exacta;
-        }
-    
-        public String bettingTri() {
-            return trifecta;
-        }
-       
     }
