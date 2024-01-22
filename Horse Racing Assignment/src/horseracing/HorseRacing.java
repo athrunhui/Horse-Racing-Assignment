@@ -14,8 +14,8 @@ public class HorseRacing {
             HorseRacingHelper.clearConsole();
             int numHorsesInRace = (int)(Math.random()*7)+5; // 5-11 horses in a race
            
-            int raceLength = HorseRacing.setRaceLength();   // sets a random race length
-            int raceType = HorseRacing.setRaceType();       // sets a random race terrain
+            int raceLength = setRaceLength();   // sets a random race length
+            int raceType = setRaceType();       // sets a random race terrain
            
             Race race = HorseRacingHelper.createRace(numHorsesInRace, raceLength, raceType);
             race.displayRaceInfo();         // displays the race type, race length, all of the horses and stats
@@ -59,7 +59,7 @@ public class HorseRacing {
 
     }
 
-    public static int setRaceLength(){
+    private static int setRaceLength(){
         int raceLength;
         int raceLChange = (int)((Math.random()*10)%3); //gets random # then checks remainder when / by 3
 
@@ -73,7 +73,7 @@ public class HorseRacing {
         return raceLength; 
     }
 
-    public static int setRaceType(){ //same logic as setRaceLength
+    private static int setRaceType(){ //same logic as setRaceLength
         int raceType;
         int raceTChange = (int)((Math.random()*10)%3);
 
