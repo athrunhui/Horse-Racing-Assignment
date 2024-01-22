@@ -8,8 +8,10 @@ public class HorseRacing {
      public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         boolean doneBets = false;
+        boolean donePlayers = false;
         HorseRacingHelper.prepareHorseRacingSimulation();
         boolean gameOver = false;
+        int wallet = 50;
         while(!gameOver){
             HorseRacingHelper.clearConsole();
             int numHorsesInRace = (int)(Math.random()*7)+5; // 5-11 horses in a race
@@ -19,12 +21,14 @@ public class HorseRacing {
            
             Race race = HorseRacingHelper.createRace(numHorsesInRace, raceLength, raceType);
             race.displayRaceInfo();         // displays the race type, race length, all of the horses and stats
-            race.displayBettingInfo();      // displays the win, place, and show odds for each horse   
+            race.displayBettingInfo(wallet);      // displays the win, place, and show odds for each horse   
+            
             while(!doneBets){               // allows the player to place multiple bets
-                doneBets = race.betType(in).equals("n"); 
+                wallet = race.betType(in, wallet); 
+                doneBets = race.doneBets(in).equals("n");
             }
             System.out.print("\u001B[?25l");  // Hide the cursor
-            race.startRace();
+            race.startRace(wallet);
             System.out.println("Race is Over");
             
             gameOver = playAgain(in);

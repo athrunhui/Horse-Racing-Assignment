@@ -8,17 +8,18 @@ import java.util.Scanner;
 public class Race {
     private List<Horse> horses;
     private List<Bet> bets;
+    private List<Player> players;
     private double raceLength; // in furlongs
     private String raceSurface; // "grass", "dirt", or "mud" (Uses HorseRacingHelper constants)
     private int currentHorse;
     private int currentBet;
+    private int currentPlayer;
     private String spaceM;
     private String spaceG;
     private String spaceD;
     private String spaceL;
     private int betAmt = 0;
     private int returnAmt;
-    private int wallet = 20;
     private int betType;
     private String result;
     private Scanner in = new Scanner(System.in);
@@ -32,10 +33,11 @@ public class Race {
         this.currentHorse = 0;
         this.currentBet = 0;
         this.results = new ArrayList<Horse>();
-        this.bets = new ArrayList<Bet>(); // creates somewhere to hold all of the betting information
+        this.bets = new ArrayList<Bet>();       // creates somewhere to hold all of the betting information
+        this.players = new ArrayList<Player>(); // creates somewhere to hold all the players
     }
 
-    public void checkBets(){
+    public void checkBets(int wallet){
         displayBetResults();
         for (Bet bet : bets) {
             if (bet.getTypeBet() == 1){                                         // if it is a "win" bet
@@ -170,12 +172,20 @@ public class Race {
         return bets;
     }
 
+    public List<Player> getPlayers(){
+        return players;
+    }
+
     public int numHorses(){ // number of horses in the list
         return horses.size();
     }
 
     public int numBets(){ // number of bets in the list
         return bets.size();
+    }
+
+    public int numPlayers(){
+        return players.size();
     }
 
     public Horse getNextHorse(){ // gets the next horse in the list starting at 0
@@ -189,6 +199,12 @@ public class Race {
         if(currentBet == bets.size())
             currentBet = 0;
         return bets.get(currentBet++);
+    }
+
+    public Player getNextPlayer(){
+        if(currentPlayer == players.size())
+            currentPlayer = 0;
+        return players.get(currentPlayer++);
     }
 
     public double getRaceLength() {
@@ -240,7 +256,7 @@ public class Race {
         System.out.println();
     }
 
-    public void displayBettingInfo(){ // displays each horse and their odds of getting the win, place, and show bet
+    public void displayBettingInfo(int wallet){ // displays each horse and their odds of getting the win, place, and show bet
         System.out.println("1. Win - A horse finishing 1st");
         System.out.println("2. Place - A horse finishing 1st or 2nd");
         System.out.println("3. Show - A horse finishing in the top 3");
@@ -288,28 +304,30 @@ public class Race {
         return this.betType;
     }
 
-    public String betType(Scanner in){
-        chooseBetType();                // prompts the player to choose a bet type
-
-        if (getBetType() < 4)           // if the bet is a win, place, or show bet
-          placeBet();                   // they will be prompted to place a bet amt on a horse
-
-        else if(getBetType() == 4)      // if the bet is a boxed exacta
-          placeBetBoxEx();              // they will be prompted to place a bet on 2 horses
-
-        else if(getBetType() == 5)      // if the bet is a boxed trifecta
-          placeBetBoxTri();             // they will be prompted to place a bet on 3 horses
-
-        else if(getBetType() == 6)      // if the bet is an exacta
-          placeBetEx();                 // they will be prompted to place a bet on 2 horses
-
-        else if(getBetType() == 7)      // if the bet is a trifecta
-          placeBetTri();                // they will be prompted to place a bet on 3 horses
-
+    public String doneBets(Scanner in){
         if(askDoneBets(in).equals("n")) // if they don't want to make a bet, they will respond "n"
           return "n";                   
         return "y";                     // otherwise they will respond "y"
-        
+    }
+
+    public int betType(Scanner in, int wallet){
+        chooseBetType();                // prompts the player to choose a bet type
+
+        if (getBetType() < 4)           // if the bet is a win, place, or show bet
+          wallet = placeBet(wallet);                   // they will be prompted to place a bet amt on a horse
+
+        else if(getBetType() == 4)      // if the bet is a boxed exacta
+          wallet = placeBetBoxEx(wallet);              // they will be prompted to place a bet on 2 horses
+
+        else if(getBetType() == 5)      // if the bet is a boxed trifecta
+          wallet = placeBetBoxTri(wallet);             // they will be prompted to place a bet on 3 horses
+
+        else if(getBetType() == 6)      // if the bet is an exacta
+          wallet = placeBetEx(wallet);                 // they will be prompted to place a bet on 2 horses
+
+        else if(getBetType() == 7)      // if the bet is a trifecta
+          wallet = placeBetTri(wallet);                // they will be prompted to place a bet on 3 horses
+        return wallet;     
     }
 
     public String askDoneBets(Scanner in){
@@ -328,7 +346,7 @@ public class Race {
         return result;
     }
 
-    public void placeBet(){ // method for win, place, or show bets
+    public int placeBet(int wallet){ // method for win, place, or show bets
 
         int horseNumber = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse to bet on: ");
         Horse horse = horses.get(horseNumber - 1); // prompts the user to choose a horse from 1-# of horses in the race
@@ -339,9 +357,11 @@ public class Race {
         wallet -= this.betAmt;      // prompts user to bet money and subtracts it from the wallet
 
         bets.add(new Bet(this.betType, horse, this.betAmt)); // creates a new bet in the list to hold the betting info
+    
+        return wallet;
     }
 
-    public void placeBetBoxEx(){ // method for boxed exacta and prompts 2 horses instead of 1, otherwise same logic as placeBet()
+    public int placeBetBoxEx(int wallet){ // method for boxed exacta and prompts 2 horses instead of 1, otherwise same logic as placeBet()
 
         int horseNumber1 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse place 1st or 2nd: ");
         Horse horse1 = horses.get(horseNumber1 - 1);
@@ -352,10 +372,11 @@ public class Race {
         this.betAmt = HorseRacingHelper.getNumericInput(1, wallet, in, "Please choose a bet amount: ");   
         wallet -= this.betAmt;
         bets.add(new Bet(this.betType, horse1, horse2, this.betAmt));
-          
+        
+        return wallet;
     }
 
-    public void placeBetBoxTri(){ // method for boxed trifecta and prompts 3 horses, otherwise same logic  
+    public int placeBetBoxTri(int wallet){ // method for boxed trifecta and prompts 3 horses, otherwise same logic  
 
         int horseNumber1 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse place 1st, 2nd, or 3rd: ");
         Horse horse1 = horses.get(horseNumber1 - 1);
@@ -368,9 +389,11 @@ public class Race {
         this.betAmt = HorseRacingHelper.getNumericInput(1, wallet, in, "Please choose a bet amount: ");   
         wallet -= this.betAmt;
         bets.add(new Bet(this.betType, horse1, horse2, horse3, this.betAmt));
+
+        return wallet;
     }
 
-    public void placeBetEx(){ // method for exacta and prompts 2 horses, otherwise same logic
+    public int placeBetEx(int wallet){ // method for exacta and prompts 2 horses, otherwise same logic
 
         int horseNumber1 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse to place 1st: ");
         Horse horse1 = horses.get(horseNumber1 - 1);
@@ -382,10 +405,12 @@ public class Race {
         this.betAmt = HorseRacingHelper.getNumericInput(1, wallet, in, "Please choose a bet amount: ");   
         wallet -= this.betAmt;
 
-        bets.add(new Bet(this.betType, horse1, horse2, this.betAmt));       
+        bets.add(new Bet(this.betType, horse1, horse2, this.betAmt));  
+        
+        return wallet;
     }
 
-    public void placeBetTri(){ // method for trifecta and prompts 3 horses, otherwise same logic
+    public int placeBetTri(int wallet){ // method for trifecta and prompts 3 horses, otherwise same logic
 
         int horseNumber1 = HorseRacingHelper.getNumericInput(1, horses.size(), in, "Please choose a horse to place 1st: ");
         Horse horse1 = horses.get(horseNumber1 - 1);
@@ -399,7 +424,9 @@ public class Race {
         this.betAmt = HorseRacingHelper.getNumericInput(1, wallet, in, "Please choose a bet amount: ");   
         wallet -= this.betAmt;
 
-        bets.add(new Bet(this.betType, horse1, horse2, horse3, this.betAmt));       
+        bets.add(new Bet(this.betType, horse1, horse2, horse3, this.betAmt));    
+        
+        return wallet;
     }
 
     public void displayBetResults(){
@@ -417,7 +444,7 @@ public class Race {
     }
 
 
-    public void startRace(){
+    public void startRace(int wallet){
         resetHorses();
         int numSpaces = (int)(raceLength*10);
         boolean done = false;
@@ -447,7 +474,7 @@ public class Race {
                 done = true;
         }
         
-        checkBets();
+        checkBets(wallet);
 
         HorseRacingHelper.stopMusic();
     }
