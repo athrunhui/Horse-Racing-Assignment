@@ -278,6 +278,7 @@ public class Race {
         System.out.println();
         System.out.println("You have $" + wallet); // prints the money in the player's wallet.
         System.out.println();
+        System.out.println("Please make all selections in numbers (e.g. selecting win bet = 1).");
     }
 
     public void chooseBetType(){ // prompts the user to choose a bet type from 1-7
