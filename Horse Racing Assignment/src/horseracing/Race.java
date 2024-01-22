@@ -294,6 +294,7 @@ public class Race {
         System.out.println();
         System.out.println("You have $" + wallet); // prints the money in the player's wallet.
         System.out.println();
+        System.out.println("Please make all selections in numbers (e.g. selecting win bet = 1).");
     }
 
     public void chooseBetType(){ // prompts the user to choose a bet type from 1-7
@@ -492,19 +493,34 @@ public class Race {
         int ratingCheck = 0;
         if (raceSurface == "Mud") // depending on race surface, will get the horses rating
             ratingCheck = horse.getMudRating(); 
-        if (raceSurface == "Grass")
+        else if (raceSurface == "Grass")
             ratingCheck = horse.getGrassRating();
-        if (raceSurface == "Dirt")
+        else if (raceSurface == "Dirt")
             ratingCheck = horse.getDirtRating();
-        if (Math.abs(raceLength - lengthCheck) <= 1.5) //if pref length is 1.5 away from race length, raise min increment
+        if (Math.abs(raceLength - lengthCheck) == 0) //if pref length is race length, raise min increment
+            mover += 3;
+        if (Math.abs(raceLength - lengthCheck) <= 1.5 && Math.abs(raceLength - lengthCheck) > 0) //if pref length is 1.5 away from race length, raise min increment
             mover += 2;
-        if (Math.abs(raceLength - lengthCheck) <= 3 && Math.abs(raceLength - lengthCheck) > 1.5) //if pref length is 3-1.5 away from race length, raise min increment
+        if (Math.abs(raceLength - lengthCheck) <= 2.5 && Math.abs(raceLength - lengthCheck) > 1.5) //if pref length is 2.5-1.5 away from race length, raise min increment
             mover += 1;
-        if (ratingCheck >= 8) //if rating is over 8, raise min increment
+        if (ratingCheck == 10) //if rating is 10, raise min increment
+            mover += 4;
+        if (ratingCheck >= 8 && ratingCheck < 10) //if rating is over 8, raise min increment
             mover += 3;
         if (ratingCheck >= 6 && ratingCheck < 8) //if rating is 6-8, raise min increment
             mover += 2;
         return mover;
       }
+
+    /*this method sets the movement for each horse that affects how quickly they move across the screen,
+    i.e. how likely they are to win. the method returns a minimum movement number that is used in the math.random
+    in the main create race method. The default is set to 1 so if a horse has no race advantages, it can move 1-4
+    increments. There are then a series of if statements that check for certain advantages per horse. It first checks
+    what the race length is away from the horses preferred length. then it checks the horses rating for the specific 
+    race surface. It raises the minimum increment more for a higher rating. The closer the preferred length is to the 
+    real length, the more of an advantage the horse has, so it has a higher minimum increment. Same for the closer the 
+    the surface rating is to 10. So for example, if the race is an 8 furlong mud race, and a horse has a preferred length 
+    of 7 furlongs and a 9 mud rating it will move between 6-10. A horse that prefers 8 furlongs and has a 10 mud rating
+    for the same race will move 8-12. A horse that prefers 12 furlongs and dirt for the same race will move 1-4.*/
 
 }
