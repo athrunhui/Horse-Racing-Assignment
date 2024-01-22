@@ -460,7 +460,7 @@ public class Race {
     }
 
     private int setMovement(Horse horse){ //movement method
-        int mover = 0; // default is 0
+        int mover = 1; // default is 1
         double lengthCheck = horse.getPreferredLength(); //get horse pref length
         int ratingCheck = 0;
         if (raceSurface == "Mud") // depending on race surface, will get the horses rating
