@@ -465,7 +465,7 @@ public class Race {
                 results.add(horse);
                 horse.setRaceFinished(true);
             } else if(!horse.raceFinished()){
-                horse.incrementPosition((int)((Math.random() * 5) + mover)); //generates random # with min being set in movement class
+                horse.incrementPosition((int)((Math.random() * 4) + mover)); //generates random # with min being set in movement class
             }
 
             displayResults();
