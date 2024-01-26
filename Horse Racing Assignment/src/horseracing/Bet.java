@@ -1,13 +1,17 @@
 package horseracing;
 
+/* this class holds all the betting info including the player who placed the bet, the type of bet, the horse(s) the bet was 
+    placed on which holds all the information about the horse and points to the horse class, and the bet amount.
+ */
+
 public class Bet {
     private int typeBet;
+    private Player player;
     private Horse horse;
     private Horse horse1;
     private Horse horse2;
     private Horse horse3;
     private int betAmount;
-    private int returnAmount;
 
     public int getTypeBet() {
         return typeBet;
@@ -33,31 +37,34 @@ public class Bet {
         return betAmount;
     }
 
-    public int getReturnAmount() {
-        return returnAmount;
+    public Player getPlayer(){
+        return player;
     }
 
     // constructs win, place, and show bets
-    public Bet(int typeBet, Horse horse, int betAmount){    
+    public Bet(int typeBet, Horse horse, int betAmount, Player player){    
         this.typeBet = typeBet;
         this.horse = horse;
         this.betAmount = betAmount;
+        this.player = player;
     }
     
     // constructs boxed exacta and exacta bets
-    public Bet(int typeBet, Horse horse1, Horse horse2, int betAmount){     
+    public Bet(int typeBet, Horse horse1, Horse horse2, int betAmount, Player player){     
         this.typeBet = typeBet;
         this.horse1 = horse1;
         this.horse2 = horse2;
         this.betAmount = betAmount;
+        this.player = player;
     }
 
     // constructs boxed trifecta and trifecta bets
-    public Bet(int typeBet, Horse horse1, Horse horse2, Horse horse3, int betAmount){
+    public Bet(int typeBet, Horse horse1, Horse horse2, Horse horse3, int betAmount, Player player){
         this.typeBet = typeBet;
         this.horse1 = horse1;
         this.horse2 = horse2;
         this.horse3 = horse3;
         this.betAmount = betAmount;
+        this.player = player;
     }
 }
