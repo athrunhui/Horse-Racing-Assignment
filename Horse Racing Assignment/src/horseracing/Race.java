@@ -599,11 +599,12 @@ public class Race {
         int mover = 1; // default is 1
         double lengthCheck = horse.getPreferredLength(); //get horse pref length
         int ratingCheck = getCurrentRating(horse);
-        if (Math.abs(raceLength - lengthCheck) == 0) //if pref length is race length, raise min increment
+        double lengthAdv = (Math.abs(raceLength - lengthCheck));
+        if (lengthAdv == 0) //if pref length is race length, raise min increment
             mover += 3;
-        if (Math.abs(raceLength - lengthCheck) <= 1.5 && Math.abs(raceLength - lengthCheck) > 0) //if pref length is 1.5 away from race length, raise min increment
+        else if (lengthAdv <= 1.5 && lengthAdv > 0) //if pref length is 1.5 away from race length, raise min increment
             mover += 2;
-        if (Math.abs(raceLength - lengthCheck) <= 2.5 && Math.abs(raceLength - lengthCheck) > 1.5) //if pref length is 2.5-1.5 away from race length, raise min increment
+        else if (lengthAdv <= 2.5 && lengthAdv > 1.5) //if pref length is 2.5-1.5 away from race length, raise min increment
             mover += 1;
         mover += (ratingCheck/2);
         return mover;
