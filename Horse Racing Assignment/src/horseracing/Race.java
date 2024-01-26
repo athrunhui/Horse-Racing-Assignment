@@ -622,13 +622,13 @@ public class Race {
 
     /*this method sets the movement for each horse that affects how quickly they move across the screen,
     i.e. how likely they are to win. the method returns a minimum movement number that is used in the math.random
-    in the main create race method. The default is set to 1 so if a horse has no race advantages, it can move 1-4
+    in the main create race method. The default is set to 1 so if a horse has no race advantages, it can move 1-5
     increments. There are then a series of if statements that check for certain advantages per horse. It first checks
     what the race length is away from the horses preferred length. then it checks the horses rating for the specific 
     race surface. It raises the minimum increment more for a higher rating. The closer the preferred length is to the 
     real length, the more of an advantage the horse has, so it has a higher minimum increment. Same for the closer the 
     the surface rating is to 10. So for example, if the race is an 8 furlong mud race, and a horse has a preferred length 
-    of 7 furlongs and a 9 mud rating it will move between 6-10. A horse that prefers 8 furlongs and has a 10 mud rating
-    for the same race will move 8-12. A horse that prefers 12 furlongs and dirt for the same race will move 1-4.*/
+    of 7 furlongs and a 9 mud rating it will move between 6-11. A horse that prefers 8 furlongs and has a 10 mud rating
+    for the same race will move 8-13. A horse that prefers 12 furlongs and dirt for the same race will move 1-5.*/
 
 }
