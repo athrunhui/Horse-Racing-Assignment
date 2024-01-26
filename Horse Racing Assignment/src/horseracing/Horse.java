@@ -14,6 +14,9 @@ public class Horse{
         private String win = "-1";
         private String place = "-2";
         private String show = "-2";
+        private int wOdd;
+        private int pOdd;
+        private int sOdd;
 
         private int currentPosition;
         private boolean finishedRace;
@@ -131,11 +134,12 @@ public class Horse{
                 else if(getPreferredLength() > 8.0)
                   this.winOdd -=1;
             }
+            wOdd = this.winOdd;
             return this.winOdd + win;
         }
 
         public int getWinOdds(){
-          return Integer.parseInt(bettingWin().substring(0,1));
+          return wOdd;
         }
 
         public String bettingPlace() {
@@ -170,13 +174,16 @@ public class Horse{
                 else if(getPreferredLength() > 8.0)
                   this.plOdd -=1;
             }
-            if(this.plOdd % 2 == 0)
-                return this.plOdd / 2 + "-1";
+            if(this.plOdd % 2 == 0){
+              pOdd = this.plOdd;
+              return this.plOdd / 2 + "-1";
+            }
+            pOdd = this.plOdd;
             return this.plOdd + place;
         }
 
         public int getPlaceOdds(){
-          return Integer.parseInt(bettingPlace().substring(0,1));
+          return pOdd;
         }
     
         public String bettingShow() {
@@ -211,12 +218,15 @@ public class Horse{
                 else if(getPreferredLength() > 8.0)
                   this.shOdd -=1;
             }
-            if(this.shOdd % 2 == 0)
-                return this.shOdd / 2 + "-1";
+            if(this.shOdd % 2 == 0){
+              sOdd = this.shOdd;
+              return this.shOdd / 2 + "-1";
+            }
+            sOdd = this.shOdd;
             return this.shOdd + show;
         }
 
         public int getShowOdds(){
-          return Integer.parseInt(bettingShow().substring(0,1));
+          return sOdd;
         }
     }

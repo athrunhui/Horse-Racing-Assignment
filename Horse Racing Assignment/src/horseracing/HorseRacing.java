@@ -7,11 +7,11 @@ public class HorseRacing {
 
      public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        boolean doneBets = false;
-        boolean donePlayers = false;
         HorseRacingHelper.prepareHorseRacingSimulation();
         boolean gameOver = false;
+        boolean isFirstGame = true;
         int wallet = 50;
+        int numPlayers = 1;
         while(!gameOver){
             HorseRacingHelper.clearConsole();
             int numHorsesInRace = (int)(Math.random()*7)+5; // 5-11 horses in a race
@@ -21,18 +21,29 @@ public class HorseRacing {
            
             Race race = HorseRacingHelper.createRace(numHorsesInRace, raceLength, raceType);
             race.displayRaceInfo();         // displays the race type, race length, all of the horses and stats
-            race.displayBettingInfo(wallet);      // displays the win, place, and show odds for each horse   
+            race.displayBettingInfo();      // displays the win, place, and show odds for each horse   
             
-            while(!doneBets){               // allows the player to place multiple bets
-                wallet = race.betType(in, wallet); 
-                doneBets = race.doneBets(in).equals("n");
+            // if the player(s) have chosen to play again, isFirst game will be false to ensure that the players do not make more players. 
+            if(isFirstGame) { 
+                numPlayers = race.askNumPlayers(in);
+                for(int i = 0; i < numPlayers; i++){
+                    race.askPlayerName(in, i + 1, wallet);
+                }    
             }
+            race.betType(in); 
+            
             System.out.print("\u001B[?25l");  // Hide the cursor
             race.startRace(wallet);
             System.out.println("Race is Over");
             
             gameOver = playAgain(in);
-            doneBets = gameOver;
+            if(!gameOver){ // if the player(s) choose to play again, the race class will remove all bets in their list and the player's list
+                race.removeBets();
+            }
+            isFirstGame = false;
+            gameOver = race.gameOver();
+            if(race.gameOver()) // if the players all have no more money, the game is over since they cannot bet
+                System.out.println("Player(s) have no more money left, the game is over");
         }
 
         
